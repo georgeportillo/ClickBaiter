@@ -83,7 +83,7 @@ function checkForStupidClickBait() {
 
 function addClickBaitWarning(currentArticle) {
   var warning = document.createElement('div');
-  warning.innerHTML = 'This article is a fucking clickbait.';
+  warning.innerHTML = 'This article is a f*** clickbait.';
   warning.className = 'articleClickbait';
   currentArticle.appendChild(warning);
 }
