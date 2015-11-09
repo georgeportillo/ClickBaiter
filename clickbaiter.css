@@ -1,0 +1,9 @@
+.articleClickbait {
+    position: absolute;
+    right: -12px;
+    top: -72px;
+    z-index: 10000;
+    background: red;
+    padding: 20px;
+    color: #fff;
+}
