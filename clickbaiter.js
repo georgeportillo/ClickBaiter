@@ -84,13 +84,13 @@ function checkForStupidClickBait() {
 function addClickBaitWarning(currentArticle) {
   var warning = document.createElement('div');
   warning.innerHTML = 'This article is a fucking clickbait.';
-  warning.setAttribute('class', 'articleClickbait');
+  warning.className = 'articleClickbait';
   currentArticle.appendChild(warning);
 }
 
 function markArticleAsSafe(currentArticle) {
   var safe = document.createElement('div');
-  safe.setAttribute('class', 'articleSafe');
+  safe.className = 'articleSafe';
   currentArticle.appendChild(safe); 
 }
 
