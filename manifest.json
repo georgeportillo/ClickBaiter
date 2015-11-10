@@ -1,9 +1,8 @@
 {
   "manifest_version": 2,
-
   "name": "ClickBaiter",
   "description": "ClickBaiter flags items that are clickbait from your newsfeed.",
-  "version": "1.0",
+  "version": "0.1",
 
   "browser_action": {
    "default_popup": "clickbaitpopup.html"

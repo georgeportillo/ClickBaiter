@@ -5,55 +5,93 @@ window.addEventListener('scroll', throttle(function() {
 var regexes = [
 {
   regex: "(what\\shappen\\snext)",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "you.+?believe",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "warning\\ssigns",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "which\\sone.+?friends",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
-  regex: "\\d+\\s(unique|celebrities|childhood|people|times|hilarious|things|photos|amazing|cool|beautiful|incredible)",
-  severity: 0
+  regex: "\\d+\\s(useful|frustrating|of|all|outrageous|facts|real|unique|celebrities|childhood|people|times|hilarious|things|photos|amazing|cool|beautiful|incredible)",
+  severity: 0,
+  sensitive: false
 },
 {
   regex: 'click\\shere',
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "(and\\sIt\\sIs)\\.\\.\\.",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "check\\sout(this)?",
-  severity: 0
+  severity: 0,
+  sensitive: false
+},
+{
+  regex: "what\\shappens\\swhen",
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "#\\d.+is",
-  severity: 1
+  severity: 1,
+  sensitive: false
+},
+{
+  regex: "wrong\\s?this\\s?.+?time",
+  severity: 1,
+  sensitive: false
+},
+{
+  regex: "what\\sthe\\shell.+?this",
+  severity: 0,
+  sensitive: false
+},
+{
+  regex: 'what\\swould\\syou\\sdo',
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "(find\\sout).+?(free|how)!?",
-  severity: 0
+  severity: 0,
+  sensitive: false
 },
 {
   regex: "\\?.+?(the\\sanswer)",
-  severity: 1
+  severity: 1,
+  sensitive: false
 },
 {
   regex: "(experts.+?in)",
-  severity: 1
+  severity: 1,
+  sensitive: false
 },
 {
   regex: "(the\\sresult\\s)",
-  severity: 1
+  severity: 1,
+  sensitive: false
+},
+{
+  regex: "\\[?(THIS|WOW|INCREDIBLE|AMAZING)\\]?",
+  severity: 1,
+  sensitive: true
 }
 ];
 
@@ -64,20 +102,36 @@ function checkForStupidClickBait() {
   var clickBaitArticlesLength = possibleClickBaitArticles.length;
   for(var i = 0; i < clickBaitArticlesLength; i++) {
     var currentArticle = possibleClickBaitArticles[i];
-    if(currentArticle.childNodes.length <= 1) {
-      var articleTextContent = currentArticle.textContent;
-      for(var j = 0; j < regexLength; j++) {
-        var reg = new RegExp(regexes[j].regex, "gi");
-        var severity = regexes[j].severity;
-        var isTheArticleSafe = articleTextContent.search(reg);
 
-        if(isTheArticleSafe == 0) {
-          addClickBaitWarning(currentArticle);
+    if(currentArticle.children.length <= 1) {
+      var articleTextContent = currentArticle.textContent;
+
+      for(var j = 0; j < regexLength; j++) {
+        var sensitive = regexes[j].sensitive;
+        var modifiers;
+
+        if(sensitive == true) {
+          modifiers = "g";
         } else {
-          markArticleAsSafe(currentArticle)
+          modifiers = "gi";
+        }
+
+        var reg = new RegExp(regexes[j].regex, modifiers);
+        var severity = regexes[j].severity;
+        var isTheArticleSafe = articleTextContent.match(reg);
+
+        if(isTheArticleSafe != null) {
+          addClickBaitWarning(currentArticle);
+          break;
         }
       }
+
+      if(currentArticle.children.length <= 1) {
+        markArticleAsSafe(currentArticle);
+      }
     }
+
+
   }
 }
 
@@ -90,6 +144,7 @@ function addClickBaitWarning(currentArticle) {
 
 function markArticleAsSafe(currentArticle) {
   var safe = document.createElement('div');
+  safe.innerHTML = 'Safe';
   safe.className = 'articleSafe';
   currentArticle.appendChild(safe); 
 }
