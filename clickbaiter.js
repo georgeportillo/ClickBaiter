@@ -24,7 +24,12 @@ var regexes = [
   sensitive: false
 },
 {
-  regex: "\\d+\\s(useful|frustrating|of|all|outrageous|facts|real|unique|celebrities|childhood|people|times|hilarious|things|photos|amazing|cool|beautiful|incredible)",
+  regex: "got\\s.+?quiz",
+  severity: 0,
+  sensitive: false
+},
+{
+  regex: "\\d+\\s(useful|truths|ways|disappointing|beer|lifehacks|historically|signs|easy|fails|frustrating|of|all|outrageous|facts|real|unique|celebrities|childhood|people|times|hilarious|things|struggles|photos|amazing|cool|awesome|beautiful|incredible)",
   severity: 0,
   sensitive: false
 },
@@ -74,6 +79,11 @@ var regexes = [
   sensitive: false
 },
 {
+  regex: "utterly\\shorrifying",
+  severity: 1,
+  sensitive: false
+},
+{
   regex: "\\?.+?(the\\sanswer)",
   severity: 1,
   sensitive: false
@@ -89,7 +99,7 @@ var regexes = [
   sensitive: false
 },
 {
-  regex: "\\[?(THIS|WOW|INCREDIBLE|AMAZING)\\]?",
+  regex: "\\[?(THIS|WOW|INCREDIBLE|VIDEO|WATCH|AMAZING)\\]?",
   severity: 1,
   sensitive: true
 }
@@ -136,17 +146,64 @@ function checkForStupidClickBait() {
 }
 
 function addClickBaitWarning(currentArticle) {
-  var warning = document.createElement('div');
-  warning.innerHTML = 'This article is a f*** clickbait.';
-  warning.className = 'articleClickbait';
-  currentArticle.appendChild(warning);
+
+  chrome.storage.sync.get("action", function (obj) {
+    if(obj.action == "flag") {
+      var warning = document.createElement('div');
+      warning.className = 'articleClickbait';
+
+      var message = document.createElement('div');
+
+      var title = document.createElement('h1');
+      title.className = 'articleTitle';
+      title.textContent = "This article is clickbait";
+
+      var subtitle = document.createElement('p');
+      subtitle.className = 'articleSubtitle';
+      subtitle.textContent = "The sole purpose for these types of articles is to profit off of you. They have a catchy headline to get your attention and to get you to click. It's the fast food of the Internet. If this news site cared about you, they would not do this.";
+
+      message.appendChild(title);
+      message.appendChild(subtitle);
+      warning.appendChild(message);
+
+      currentArticle.appendChild(warning);
+
+      var articleContainer = closest(currentArticle, '.mtm');
+      articleContainer.classList.add('clickBaitArticle');
+    } else {
+      var articleContainer = closest(currentArticle, '._4-u2');
+      articleContainer.remove();
+    }
+  });
+
+
+
 }
 
 function markArticleAsSafe(currentArticle) {
   var safe = document.createElement('div');
-  safe.innerHTML = 'Safe';
   safe.className = 'articleSafe';
   currentArticle.appendChild(safe); 
+}
+
+function closest(el, selector) {
+  var matchesFn;
+  ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+    if (typeof document.body[fn] == 'function') {
+      matchesFn = fn;
+      return true;
+    }
+    return false;
+  });
+
+  while (el!==null) {
+    parent = el.parentElement;
+    if (parent!==null && parent[matchesFn](selector)) {
+      return parent;
+    }
+    el = parent;
+  }
+  return null;
 }
 
 // Throttle function grabbed from:
@@ -171,3 +228,19 @@ function throttle(fn, threshhold, scope) {
     }
   };
 }
+
+function saveData() {
+  var action = $('input[name="action"]:checked').val();
+  var button = document.getElementById('save');
+
+  chrome.storage.sync.set({'action': action}, function() {
+    button.textContent = "Saved!";
+    button.classList.add("saved");
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var button = document.getElementById('save');
+  button.addEventListener('click', saveData);
+});
+

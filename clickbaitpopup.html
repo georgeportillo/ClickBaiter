@@ -1,11 +1,23 @@
 <!doctype html>
 <html>
-  <head>
-    <title>GTmetrix Analyzer</title>
-    <script src="clickbaiter.js"></script>
-  </head>
-  <body>
-    <h1>GTmetrix Analyzer</h1>
-    <button id="checkPage">Check this page now!</button>
-  </body>
+<head>
+	<title>ClickBaiter</title>
+	<link rel="stylesheet" type="text/css" href="clickbaiter.css">
+</head>
+<body class="clickBaiterPopup">
+	<h1 class="title">ClickBaiter Settings</h1>
+	<p>When we find an annoying clickbait, what do you want to do?</p>
+
+	<input type="radio" name="action" value="remove"> Remove it completely
+	<br>
+	<input type="radio" name="action" value="flag"> Flag it (Make the post ignorable [see plugin screenshot])
+	<br>
+	<button id="save">Save</button>
+	
+	<div class="me">
+	If you like ClickBaiter, I don't want you to donate. I want you to follow me on Facebook. I love building cool shit that people use. Follow me and you'll know what I build next! <a target="_blank" href="https://www.facebook.com/theadmindude">This is me.</a>
+	</div>
+</body>
+<script src="jquery.min.js"></script>
+<script src="clickbaiter.js"></script>
 </html>

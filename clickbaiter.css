@@ -1,9 +1,68 @@
 .articleClickbait {
     position: absolute;
     right: -12px;
-    top: -72px;
     z-index: 10000;
     background: red;
     padding: 20px;
     color: #fff;
+    height: 210px;
+    top: -260px;
+    width: 430px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.clickBaitArticle {
+  opacity: 0.06;
+}
+
+.articleClickbait .articleTitle{
+  font-size: 25px;
+}
+
+.articleClickbait .articleSubtitle{
+}
+
+
+/* Pop Up */
+
+.clickBaiterPopup {
+  width: 300px;
+  height: 300px;
+  margin: 0px;
+  padding: 10px;
+  border-bottom: 6px solid #60B95E;
+}
+
+.clickBaiterPopup .title {
+  margin: 0px;
+  font-family: roboto;
+  font-weight: 300;
+}
+
+.clickBaiterPopup p {
+  font-size: 14px;
+  font-family: roboto;
+  font-weight: 300;
+  margin: 5px 0 20px 0px;
+}
+
+.me {
+  position: absolute;
+  bottom: 15px;
+}
+
+#save {
+  color: #60B95E;
+  background-color: #fff;
+  border: 1px solid #60B95E;
+  padding: 8px 10px;
+  outline: none;
+  margin-top: 15px;
+}
+
+#save.saved {
+  color: #fff;
+  background-color: #60B95E;
 }
